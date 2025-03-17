@@ -71,6 +71,7 @@ setMethod("projectR",signature(data="matrix",loadings="matrix"),function(
 #' @param NP vector of integers indicating which columns of loadings object to use. The default of NP=NA will use entire matrix.
 #' @param full logical indicating whether to return the full model solution. By default only the new pattern object is returned.
 #' @param model Optional arguements to choose method for projection
+#' @param chopBy number of columns to chop the data into (chopping helps runnning large datasets)
 #' @rdname projectR-methods
 #' @aliases projectR
 setMethod("projectR",signature(data="dgCMatrix",loadings="matrix"),function(
@@ -79,7 +80,8 @@ setMethod("projectR",signature(data="dgCMatrix",loadings="matrix"),function(
   dataNames = NULL, # a vector with names of data rows
   loadingsNames = NULL, # a vector with names of loadings rows
   NP=NULL, # vector of integers indicating which columns of loadings object to use. The default of NP=NA will use entire matrix.
-  full=FALSE # logical indicating whether to return the full model solution. By default only the new pattern object is returned.
+  full=FALSE, # logical indicating whether to return the full model solution. By default only the new pattern object is returned.
+  chopBy=1000 # number of columns to chop the data into
   ){
 
   if(!is.null(NP)) {
@@ -93,7 +95,7 @@ setMethod("projectR",signature(data="dgCMatrix",loadings="matrix"),function(
 
   chop <- function(sparsematrix) {
     coln <- ncol(sparsematrix)
-    bins <- seq(1, coln, by = 1000)
+    bins <- seq(1, coln, by = chopBy)
     lapply(seq_along(bins), function(i) {
       start <- bins[i]
       end <- ifelse(i < length(bins), bins[i + 1] - 1, coln)

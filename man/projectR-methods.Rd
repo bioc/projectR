@@ -33,7 +33,8 @@ projectR(data, loadings, dataNames = NULL, loadingsNames = NULL, ...)
   dataNames = NULL,
   loadingsNames = NULL,
   NP = NULL,
-  full = FALSE
+  full = FALSE,
+  chopBy = 1000
 )
 
 \S4method{projectR}{matrix,LinearEmbeddingMatrix}(
@@ -129,6 +130,8 @@ projectR(data, loadings, dataNames = NULL, loadingsNames = NULL, ...)
 \item{bootstrapPval}{logical to indicate whether to generate p-values using bootstrap, not available for prcomp and rotatoR objects}
 
 \item{bootIter}{number of bootstrap iterations, default = 1000}
+
+\item{chopBy}{number of columns to chop the data into (chopping helps runnning large datasets)}
 
 \item{model}{Optional arguements to choose method for projection}
 
