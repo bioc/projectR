@@ -112,11 +112,14 @@ setMethod("projectR",signature(data="dgCMatrix",loadings="matrix"),function(
   print(w[1])
 
   if(full==TRUE) {
-      if(length(projectionList)==1) {#if only one chunk
+      if(length(projectionList)==1) {#if only one chunk all OK
         res <- projectionList[[1]]
-      } else {
-        projectionFit <- lapply(projectionList, function(x) do.call(cbind, x))
-        res <- projectionFit
+      } else {#if multiple chunks - gather pvalues and projections
+        pvalues <- do.call(cbind,
+          lapply(projectionList, function(x) x[["pval"]]))
+        projections <- do.call(cbind,
+          lapply(projectionList, function(x) x[["projection"]]))
+        res <- list(projection=projections, pval=pvalues)
       }
   } else {
     res <- do.call(cbind, projectionList)
