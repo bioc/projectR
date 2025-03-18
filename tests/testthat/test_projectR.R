@@ -222,6 +222,11 @@ test_that("projection works on sparse data matrix with full=TRUE", {
   expect_no_error(projectR(sparse, loadings))
 
   pdense <- projectR(dense, loadings, full=TRUE)
+  #case with default number of chopBy, when it's > ncol
   psparse <- projectR(sparse, loadings, full=TRUE)
   expect_identical(pdense, psparse)
+
+  #case with chopBy < ncol
+  psparse_chunked <- projectR(sparse, loadings, full=TRUE, chopBy=10)
+  expect_identical(pdense, psparse_chunked)
 })
